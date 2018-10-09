@@ -1,7 +1,7 @@
 d = 0.001; % maks blad
 N = 1000; % maks liczba iteracji
 
-fprintf('Odwracanie macierzy rozproszonych metoda Jacobiego.\n\n');
+fprintf('Odwracanie macierzy rozrzedzonych metoda Jacobiego.\n\n');
 
 filelinks = findfiles();
 
