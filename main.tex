@@ -10,11 +10,16 @@
 \usepackage[T1]{fontenc}       % change font encoding to T1
 
 \title{Odwracanie macierzy\\metodą iteracji prostej Jacobiego\\przez rozwiązanie układów równań AX=I\\z macierzą rozrzedzoną A}
-\author{Kamil Górzyński\\grupa F1\\Wydział MiNI, Politechnika Warszawska}
+\author{\Large{Kamil Górzyński}\\grupa F1\\Wydział MiNI, Politechnika Warszawska}
 %\date{18 października 2018}
 
-
 \usepackage{blindtext}
+\usepackage{siunitx}
+
+\lstset{
+  style      = Matlab-editor,
+  basicstyle = \mlttfamily,
+  }
 
 \begin{document}
 
@@ -23,6 +28,7 @@
 \end{titlepage}
 
 \section{Wprowadzenie}
+W inżynierii, fizyce, grafice komputerowej i wielu innych dziedzinach nauki\linebreak dane modeli zapisuje się matematycznie w formie macierzy. Występują one\linebreak często w dużych rozmiarach, nierzadko jako macierze rozrzedzone. W niniejszej pracy chciałbym zaproponować sposób ich szybkiego odwracania, stosując algorytm iteracji prostej Jacobiego. Do sprawdzenia funkcjonalności programu użyję macierzy pobranych z kolekcji Tima Davisa, zawierającej realne przykłady, z jakimi mierzy się nauka\cite{matrixcollection}.
 
 \section{Algorytm iteracji prostej Jacobiego\\dla układu równań $Ax = b$ ($x$, $b$ - wektory) }
 
@@ -76,7 +82,7 @@ R =
  \end{bmatrix}
 \textrm{.}
 \]
-Zapisując $A$ w postaci zdekomponowanej oraz mnożąc stronami przez $x$, otrzymujemy heurystyczny wzór metody iteracyjnej Jacobiego.
+Zapisując $A$ w postaci zdekomponowanej oraz mnożąc stronami przez $x$,\linebreak otrzymujemy heurystyczny wzór metody iteracyjnej Jacobiego.
 \begin{align*}
 A =& D + R\\
 Ax =& (D + R)x\\
@@ -93,7 +99,7 @@ Przybliżenie końcowe z kolei otrzymamy po odpowiedniej liczbie operacji, kiedy
 
 \newpage
 \section{Zgodność algorytmu z $AX = B$\\($X$, $B$ - macierze kwadratowe)}
-W wyprowadzonym powyżej wzorze wektor $x^{(k+1)}_n$ otrzymujemy z sumy iloczynów macierzy $T_{n,n}$, $D^{-1}_{n,n}$ oraz wektorów: $x^{(k)}_n$ i $b_n$.
+W wyprowadzonym powyżej wzorze wektor $x^{(k+1)}_n$ otrzymujemy z sumy\linebreak iloczynów macierzy $T_{n,n}$, $D^{-1}_{n,n}$ oraz wektorów: $x^{(k)}_n$ i $b_n$.
 \[
 \begin{bmatrix}
     \qquad\qquad \\
@@ -125,7 +131,7 @@ W wyprowadzonym powyżej wzorze wektor $x^{(k+1)}_n$ otrzymujemy z sumy iloczyn�
  \vdots
 \end{bmatrix}_{n}
  \]
- Jest zatem możliwe utworzenie macierzy $X^{(k)}_{n\times n}$ z n wektorów kolumnowych $x^{(k)}_n$ oraz macierzy $B_{n\times n}$ z n wektorów kolumnowych $b_n$. Zastosowanie powyższego wzoru do macierzy utworzonych z n wektorów umożliwia ich jednoczesne przetworzenie.
+ Jest zatem możliwe utworzenie macierzy $X^{(k)}_{n\times n}$ z n wektorów kolumnowych $x^{(k)}_n$ oraz macierzy $B_{n\times n}$ z n wektorów kolumnowych $b_n$. Zastosowanie\linebreak powyższego wzoru do macierzy utworzonych z n wektorów umożliwia ich\linebreak jednoczesne przetworzenie.
  \[
  \begin{bmatrix}
     \qquad\qquad \\
@@ -170,7 +176,7 @@ W wyprowadzonym powyżej wzorze wektor $x^{(k+1)}_n$ otrzymujemy z sumy iloczyn�
  
 \section{Użycie algorytmu do odwracania macierzy}
 Macierz odwrotna $A^{-1}$ to macierz, dla której $A\times A^{-1} = I$.
-Umiejąc znajdować rozwiązania układu równań $A\times X = B$, można zauważyć, że dla $B=I$ rozwiązaniem układu równań dla macierzy kwadratowej $A$ jest jej odwrotność. Będziemy zatem wykonywać powyższy algorytm dla:
+Umiejąc \linebreak znajdować rozwiązania układu równań $A\times X = B$, można zauważyć, że dla $B=I$ rozwiązaniem układu równań dla macierzy kwadratowej $A$ jest jej odwrotność. Będziemy zatem wykonywać powyższy algorytm dla:
 \[
 A\times X = I
 \]
@@ -178,7 +184,7 @@ Należy przy tym zadbać, aby odwracana była macierz, która spełnia warunek z
 \[
 	\|B	\|_\infty < 1, \quad \textrm{gdzie} \quad B = D^{-1}R.
 \]
-Powyższy warunek jest też spełniony dla każdej macierzy silnie diagonalnie dominującej, czyli wtedy, gdy dla każdego wiersza macierzy $A$ zachodzi:
+Powyższy warunek jest też spełniony dla każdej macierzy silnie diagonalnie\linebreak dominującej, czyli wtedy, gdy dla każdego wiersza macierzy $A$ zachodzi:
 \[
     \sum_{j=1, i\neq j}^n |a_{i,j}| < |a_{i,i}| \textrm{.}
 \]
@@ -209,94 +215,135 @@ Na Rys. \ref{fig:LFAT5}. przedstawiono zbieżność metody Jacobiego zastosowane
     \end{subfigure}
     \caption{Zbieżność metody Jacobiego dla zgodnej i niezgodnej macierzy}\label{fig:LFAT5}
 \end{figure}
-\\Jak widać na Rys. \ref{fig:LFAT5}, metoda Jacobiego zastosowana do niespełniającej warunku zbieżności macierzy w pierwszych krokach iteracji cechuje się bardzo wysokim błędem, niemalejącym w kolejnych 10 iteracjach. W kolejnych krokach błąd udaje się zmniejszać z każdą następną iteracją, jednak zadowalający błąd na poziomie $\|Ax^{(n)} - b\| < 0,001$ otrzymano dopiero po xxx iteracjach (Rys. \ref{fig:LFAT5}a).\\
-Inaczej prezentuje się sytuacja w przypadku macierzy silnie diagonalnie dominującej - po dodaniu $189*I$ do powyższego przykładu, odwróconą macierz z zadowalającym błędem otrzymano już po 21 iteracjach (Rys. \ref{fig:LFAT5}b).\\
-W związku z powyższym, aby nie rezygnować z ciekawych do prezentacji przykładów, program posiada funkcję zamieniającą dowolną niezgodną macierz kwadratową na macierz silnie diagonalnie dominującą. 
-
-\begin{lstlisting}[
-  style      = Matlab-editor,
-  basicstyle = \mlttfamily,
-]
-function [X, int_coeff] = makedominant(A)
-% Uzyskanie macierzy silnie diagonalnie dominujacej poprzez dodanie
-% odpowiedniej stalej do kazdej wartosci glownej przekatnej macierzy/sparse
-
-[wynik, mindiff] = czyzbiezna_full_diagdom(A);
-int_coeff = ceil(-mindiff);
-
-if(wynik == 1)
-    X = A;
-    fprintf('Macierz jest juz silnie diagonalnie dominujaca.\n');
-else
-    X = A + (int_coeff .* speye(size(A)));
-    fprintf('Nowa macierz silnie diagonalnie dominujaca: A + %d * I\n', int_coeff);
-end
-end
-
-\end{lstlisting}
-
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=0.3]{5zbiega.eps}
-\caption{Zbieżność metody Jacobiego}
-\label{fig:zrzut1}
-\end{figure}
-
+\\Jak widać na Rys. \ref{fig:LFAT5}, metoda Jacobiego zastosowana do niespełniającej\linebreak warunku zbieżności macierzy w pierwszych krokach iteracji cechuje się wysokim, zmiennym błędem, niemalejącym w kolejnych 10 iteracjach. W kolejnych\linebreak krokach błąd udaje się zmniejszać z każdą następną iteracją, jednak zadowalający poziom $\|Ax^{(n)} - b\| < 0,001$ otrzymano dopiero po 796 iteracjach (Rys. \ref{fig:LFAT5}a, Tab. \ref{tab:wyniki}).\\
+Inaczej prezentuje się sytuacja w przypadku macierzy silnie diagonalnie\linebreak dominującej - po dodaniu $189*I$ do powyższego przykładu, odwróconą macierz\linebreak z zadowalającym błędem otrzymano już po 21 iteracjach (Rys. \ref{fig:LFAT5}b).\\
+W związku z powyższym, aby nie rezygnować z ciekawych do prezentacji\linebreak przykładów, program posiada opcję zamienienia dowolnej niezgodnej macierzy kwadratowej $A$ na macierz silnie diagonalnie dominującą $A'$:
+\[
+A' = A + \alpha
+ \begin{bmatrix}
+  1 & 0 & \cdots & 0 \\
+  0 & 1 & \cdots & 0 \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  0 & 0 & \cdots & 1 
+ \end{bmatrix}
+\]
+\\gdzie $\alpha$ jest najmniejszą liczbą całkowitą, dla której:
+\[
+    \forall i \in [1,n]  \sum_{j=1, i\neq j}^n |a_{i,j}| < |\alpha + a_{i,i}| \textrm{.}
+\]
+\newpage
 
 \section{Optymalizacja dla macierzy rozrzedzonych}
 % Funkcja pobiera sparse z pliku nasa4704.mat
 % Macierz 4704x4704, 104756 elementów niezerowych (ok. 0.47%)
 % https://www.cise.ufl.edu/research/sparse/matrices/Boeing/nasa4704.html
 
-W przypadku macierzy o dużych rozmiarach, często spotyka się macierze o niskim stopniu wypełnienia (stosunku wyrazów niezerowych do rozmiaru macierzy), zwane macierzami rozrzedzonymi (ang. \textit{sparse matrices}). W przypadku przetwarzania macierzy rozrzedzonej wprowadza się optymalizację, polegającą na zapisie jedynie elementów różnych od zera. W ten sposób zmniejszamy zarówno wymagania pamięciowe, jak i liczbę operacji zmiennoprzecinkowych potrzebnych do prowadzenia działań na macierzy (np. w przypadku mnożenia macierzy przez wektor, nie będziemy mnożyć przez zera!)\cite{mimuwprzykre}.
+W przypadku macierzy o dużych rozmiarach, często spotyka się macierze\linebreak o niskim stopniu wypełnienia (stosunku wyrazów niezerowych do rozmiaru\linebreak macierzy), zwane macierzami rozrzedzonymi (ang. \textit{sparse matrices}). Do przetwarzania macierzy rozrzedzonej wprowadza się optymalizację, polegającą\linebreak na zapisie jedynie elementów różnych od zera. W ten sposób zmniejszamy\linebreak wymagania pamięciowe oraz liczbę operacji zmiennoprzecinkowych potrzebnych do prowadzenia działań na macierzy (np. w przypadku mnożenia macierzy przez wektor, nie będziemy mnożyć przez zera!)\cite{mimuwprzykre}.\\
+Aby obsłużyć zarówno macierze tradycyjne, jak i rozrzedzone, poniższe funkcje pojawiają się w kodzie programu w dwóch wersjach. W zależności od włączenia przez użytkownika optymalizacji, wykonuje się odpowiednia wersja funkcji: 
 
-\begin{lstlisting}[
-  style      = Matlab-editor,
-  basicstyle = \mlttfamily,
-]
-%% Code sections are highlighted.
-% System command are supported...
-!touch testFile.txt
-A = [1, 2, 3;... %... as is line continuation.
-     4, 5, 6];
-fid = fopen('testFile.text', 'w');
-for k=1:10
-  fprintf(fid, '%6.2f \n', k)
-end
-x=1; %% this is just a comment, not the start of a section
-% Context-sensitive keywords get highlighted correctly...
-p = properties(person); %(here, properties is a function)
-x = linspace(0,1,101);
-y = x(end:-1:1);
-% ... even in nonsensical code.
-]end()()(((end while {    end    )end ))))end (end
-%{
-    block comments are supported
-%} even
-runaway block comments
-are
-\end{lstlisting}
+\begin{table}[!ht]
+{%
+\begin{tabular}
+{p{0.18\textwidth}p{0.35\textwidth}p{0.35\textwidth}}
+Funkcja  &  Matrix & Sparse \\
+\begin{lstlisting}
+A
+\end{lstlisting}&
+\begin{lstlisting}
+full(A);
+\end{lstlisting}&
+\begin{lstlisting}
+A; % sparse(A)
+\end{lstlisting}\\
 
-\section{Introduction}
-There is a theory which states that if ever anyone discovers exactly what the Universe is for and why it is here, it will instantly disappear and be replaced by something even more bizarre and inexplicable.
-There is another theory which states that this has already happened.
+\begin{lstlisting}
+I
+\end{lstlisting}&
+\begin{lstlisting}
+eye(size(A));
+\end{lstlisting}&
+\begin{lstlisting}
+speye(size(A));
+\end{lstlisting}\\
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=0.3]{5zbiega.eps}
-\caption{Zbieżność metody Jacobiego}
-\label{fig:zrzut2}
-\end{figure}
+\begin{lstlisting}
+2-Norma
+\end{lstlisting}&
+\begin{lstlisting}
+norm(A);
+\end{lstlisting}&
+\begin{lstlisting}
+normest(A);
+\end{lstlisting}\\
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=\textwidth]{universe}
-\caption{The Universe}
-\label{fig:universe}
-\end{figure}
+\begin{lstlisting}
+Macierz 
+diagonalna 
+z wektora v
+\end{lstlisting}&
+\begin{lstlisting}
+diag(v);
+\end{lstlisting}&
+\begin{lstlisting}
+spdiags(v,0,I);
+\end{lstlisting}\\
+
+\begin{lstlisting}
+Dekompozycja
+A = D + R
+\end{lstlisting}&
+\begin{lstlisting}
+Dvec = diag(A); 
+%   elementy lezace na diagonali A do wektora
+I = eye(size(A)); 
+%   macierz identycznosci o rozmiarze A
+D = diag(Dvec); 
+%   diagonala A
+R = A - D; 
+%   reszta (macierz A bez elementow z diagonali)
+\end{lstlisting}&
+\begin{lstlisting}
+Dvec = spdiags(A,0); 
+%   elementy lezace na diagonali A do wektora
+I = speye(size(A)); 
+%   macierz sparse identycznosci o rozmiarze A
+D = spdiags(Dvec,0,I); 
+%   diagonala A
+R = A - D; 
+%   reszta jako sparse (macierz A bez elementow z diagonali)
+\end{lstlisting}\\
+\end{tabular}%
+}
+\label{tab:sparse}
+\end{table}
+
+\section{Rezultaty optymalizacji}
+W Tab. \ref{tab:wyniki}. przedstawiono działanie programu w różnych wersjach. Z tabeli płynie wniosek, że im większy stopień rozrzedzenia macierzy, tym bardziej opłacalne zarówno czasowo, jak i pamięciowo, jest użycie \textit{sparse}. W zależności od trybu nie zmienia się jednak liczba iteracji, co świadczy o zgodności implementacji. 
+\begin{table}[!ht]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{rlr@{}lr@{}lllr@{}lr@{}l}
+\cline{2-6} \cline{8-12}
+\multicolumn{1}{l}{} & \multicolumn{5}{c}{Sparse}                                                                                             &  & \multicolumn{5}{c}{Matrix}                                                                                             \\ \cline{2-6} \cline{8-12} 
+\multicolumn{1}{l}{} & \multicolumn{1}{c}{Liczba iteracji} & \multicolumn{2}{c}{Czas wykonania [s]} & \multicolumn{2}{c}{Użycie pamięci [kB]} &  & \multicolumn{1}{c}{Liczba iteracji} & \multicolumn{2}{c}{Czas wykonania [s]} & \multicolumn{2}{c}{Użycie pamięci [kB]} \\ \cline{2-6} \cline{8-12} 
+LFAT5                & 796                                 & 0&,204                                 & 13&,5                                   &  & 796                                 & 0&,152                                 & 20&,3                                   \\
+LFAT5+189*I          & 21                                  & 0&,005                                 & 13&,8                                   &  & 21                                  & 0&,004                                 & 20&,3                                   \\
+nasa4704             & $\infty$                            & $\infty$&                              & -&                                      &  & $\infty$                            & $\infty$&                              & 1 383 057&,4                            \\
+nasa4704+41*I        & 16                                  & 24&,553                                & 260 274&,9                              &  & 16                                  & 728&,915                               & 1 383 057&,4                            \\ \cline{2-6} \cline{8-12} 
+\end{tabular}%
+}
+\caption{Optymalizacja programu}
+\label{tab:wyniki}
+\end{table}
 
 \section{Podsumowanie}
-Jak wynika z obliczeń, metoda Jacobiego w przypadku odwracania macierzy rozrzedzonych jest znacznie bardziej efektywna zarówno czasowo, jak i pamięciowo, kiedy wykonujemy ją na macierzach typu \textit{sparse} niż na tradycyjnych tablicach. Nie zmienia to jednak faktu, że duże macierze, występujące w fizycznych zastosowaniach, często nie spełniają warunku zbieżności metody. Powoduje to, że dobrą zbieżność uzyskuje się jedynie przy odwracaniu określonej grupy macierzy. 
+Jak wynika z obliczeń, metoda Jacobiego w przypadku odwracania macierzy rozrzedzonych o dużych rozmiarach jest znacznie bardziej efektywna, kiedy\linebreak wykonujemy ją na macierzach typu \textit{sparse} niż na tradycyjnych tablicach.\linebreak Nie zmienia to jednak faktu, że duże macierze, występujące w fizycznych zastosowaniach, często nie spełniają warunku zbieżności metody. Powoduje to, że dobrą zbieżność uzyskuje się jedynie przy odwracaniu określonej grupy macierzy. 
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\textwidth]{matrixandinversed.eps}
+\caption{Wynik programu - struktura macierzy rozrzedzonej i jej odwrotności}
+\label{fig:universe}
+\end{figure}
 
 \bibliographystyle{plain}
 \bibliography{references}
